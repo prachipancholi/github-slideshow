@@ -1,0 +1,69 @@
+import nltk
+from textblob import TextBlob
+from textblob import Word
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sen_list=[]
+feedback=[]
+c_p=0
+c_n=0
+c_ne=0
+# text=I am Happy
+while(True):
+    text = input("Enter the text you want to analyze\n")
+    obj = TextBlob(text).upper()
+    sen_list.append(obj)
+    if obj=='0':
+        break
+
+for i in range(len(sen_list)):
+    sentiment, subjectivity = sen_list[i].sentiment
+    '''print(sen_list[i].sentiment)'''
+    if sentiment == 0:
+        feedback.append('Neutral')
+        print('The text is neutral')
+    elif sentiment > 0:
+        feedback.append('Positive')
+        print('The text is positive')
+    else:
+        feedback.append('Negative')
+        print('The text is negative')
+    nouns = list()
+    '''print("This is ", nouns)'''
+    for word, tag in sen_list[i].tags:
+        if tag == 'NN':
+            nouns.append(word.lemmatize())
+    '''print(sen_list[i].tags)'''
+
+    '''print("\nThis text is about...\n")'''
+
+    for item in nouns:
+        word = Word(item)
+    '''print(word.pluralize())'''
+
+
+for elem in feedback:
+    if elem=='Positive':
+        c_p=c_p+1
+    elif elem=='Negative':
+        c_n=c_n+1
+    else:
+        c_ne=c_ne+1
+
+'''plt.xlabel('Feedback')
+plt.ylabel('Frequency')
+
+plt.title("Customers Feedbacks")
+plt.bar(feedback,)
+plt.show()'''
+
+
+
+
+    
+
+dict={'TEXT':sen_list,'Fedback':feedback}    
+df=pd.DataFrame(dict)
+df.to_csv('C:\\Users\\prach\\OneDrive\\Desktop\\20BCS1334\\aI_PICS\\sen_feedback.csv') 
+
